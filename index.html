@@ -672,8 +672,8 @@
 </head>
 <body>
 
-<!-- Setup Banner -->
-<div class="setup-banner" id="setupBanner">
+<!-- Setup Banner (hidden from visitors — press Ctrl+Shift+A to access as admin) -->
+<div class="setup-banner" id="setupBanner" style="display:none;">
   ⚙️ <strong>Admin setup needed:</strong> Connect your Google Sheet to receive prayer requests. <a onclick="openModal()">View setup instructions →</a>
 </div>
 
@@ -966,10 +966,15 @@
     if (e.target === this) closeModal();
   });
 
-  // Hide banner if URL already saved
-  window.addEventListener('load', () => {
-    if (getSheetUrl()) {
-      document.getElementById('setupBanner').innerHTML = '✅ <strong>Google Sheet connected.</strong> Prayer requests are going to your spreadsheet. <a onclick="openModal()">Update settings →</a>';
+  // Secret admin access: press Ctrl + Shift + A to open setup
+  document.addEventListener('keydown', function(e) {
+    if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+      const banner = document.getElementById('setupBanner');
+      banner.style.display = 'block';
+      if (getSheetUrl()) {
+        banner.innerHTML = '✅ <strong>Google Sheet connected.</strong> Prayer requests are going to your spreadsheet. <a onclick="openModal()">Update settings →</a>';
+      }
+      openModal();
     }
   });
 
