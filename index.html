@@ -826,6 +826,17 @@
         </div>
 
         <div class="form-group full">
+          <label>Preferred Way to Be Reached</label>
+          <select id="fcontact">
+            <option value="">— Select a preference —</option>
+            <option>Email</option>
+            <option>Phone Call</option>
+            <option>Text Message</option>
+            <option>No follow-up needed — just prayer</option>
+          </select>
+        </div>
+
+        <div class="form-group full">
           <label>Prayer Request <span class="req">*</span></label>
           <textarea id="frequest" placeholder="Share your prayer request here. Your words are safe with us…"></textarea>
         </div>
@@ -869,7 +880,7 @@
       <div class="setup-step-body">
         <h4>Create a Google Sheet</h4>
         <p>Go to <a href="https://sheets.google.com" target="_blank">sheets.google.com</a> and create a new spreadsheet. Name it something like <strong>"Hope Through Prayer — Requests"</strong>. In Row 1, add these headers exactly:<br><br>
-        <strong>Timestamp · Name · Email · Phone · Best Time to Call · Prayer Request</strong></p>
+        <strong>Timestamp · Name · Email · Phone · Best Time to Call · Preferred Contact · Prayer Request</strong></p>
       </div>
     </div>
 
@@ -891,6 +902,7 @@
     data.email,
     data.phone,
     data.callTime,
+    data.contactPref,
     data.request
   ]);
 
@@ -984,6 +996,7 @@
     const email   = document.getElementById('femail').value.trim();
     const phone   = document.getElementById('fphone').value.trim();
     const time    = document.getElementById('ftime').value;
+    const contact = document.getElementById('fcontact').value;
     const request = document.getElementById('frequest').value.trim();
     const status  = document.getElementById('form-status');
     const btn     = document.getElementById('submitBtn');
@@ -1018,7 +1031,7 @@
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, phone, callTime: time, request })
+        body: JSON.stringify({ name, email, phone, callTime: time, contactPref: contact, request })
       });
 
       // no-cors means we can't read the response, but submission goes through
@@ -1029,6 +1042,7 @@
       // Clear form
       ['fname','femail','fphone','frequest'].forEach(id => document.getElementById(id).value = '');
       document.getElementById('ftime').value = '';
+      document.getElementById('fcontact').value = '';
 
     } catch (err) {
       status.className = 'status-error';
